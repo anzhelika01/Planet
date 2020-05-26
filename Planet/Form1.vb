@@ -33,22 +33,7 @@ Public Class Form1
         _v2 = _v1 * Sqrt(2)
     End Sub
     Private Sub Button3_Click(sender As Object, e As EventArgs) Handles Button3.Click
-        Dim s1, s2, s3 As String
-        Dim r As DialogResult
-        Form2.ShowDialog()
-        s1 = Form2.TextBox1.Text
-        s2 = Form2.TextBox2.Text
-        s3 = Form2.TextBox3.Text
-        r = Form2.DialogResult
-        Form2.Close()
-        If r <> DialogResult.OK Then
-            Exit Sub
-        End If
-        Dim c As New OleDbCommand
-        c.Connection = conn
-        c.CommandText = "onsert into [Планеты](Name,M,R) values ('" & s1 & "','" & s2 & "','" & s3 & "')"
-        c.ExecuteNonQuery()
-        Refresh_grid()
+        
     End Sub
 
     Private Sub Button4_Click(sender As Object, e As EventArgs) Handles Button4.Click
@@ -90,5 +75,17 @@ Public Class Form1
         Grid1.Columns("КОД").Visible = False
         Getplanetinfo()
     End Sub
+    Private Sub GetPlanetInfo()
+        Try
+            _id = Int16.Parse(ComboBox1.SelectedValue)
+            _h = Double.Parse(TextBox3.Text)
 
+        Catch ex As Exception
+            MsgBox("Данные обновлены")
+
+        End Try
+        Dim row = ПланетыTableAdapter.GetData().Item(_id - 1)
+        _m = row.M
+        _r = row.R
+    End Sub
 End Class
